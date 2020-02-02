@@ -8,8 +8,8 @@ import mkdirp from 'mkdirp';
 import path from 'path';
 
 export type ReportItem = {
-  image: streng,
-  ratio: Number,
+  image: string,
+  ratio: number,
 };
 
 export type ReportParams = {

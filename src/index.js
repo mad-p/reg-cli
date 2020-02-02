@@ -18,6 +18,7 @@ import { findImages } from './image-finder';
 type CompareResult = {
   passed: boolean,
   image: string,
+  ratio: number,
 };
 
 type RegParams = {

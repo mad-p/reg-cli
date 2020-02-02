@@ -1,1 +1,0 @@
-{"failedItems":[{"image":"sample.png","ratio":0.010746107266435986}],"newItems":[],"deletedItems":[],"passedItems":[],"expectedItems":["sample.png"],"actualItems":["sample.png"],"diffItems":[{"image":"sample.png","ratio":0.010746107266435986}],"actualDir":"./sample/actual","expectedDir":"./sample/expected","diffDir":"./sample/diff"}

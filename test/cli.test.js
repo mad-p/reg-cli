@@ -11,12 +11,14 @@ const WORKSPACE = 'test/__workspace__';
 const RESOURCE = 'resource';
 const SAMPLE_IMAGE = 'sample.png';
 const SAMPLE_DIFF_IMAGE = 'sample.png';
+const SAMPLE_DIFF_RATIO = JSON.parse("[0.010746107266435986]")[0];
 
 const replaceReportPath = report => {
-  Object.keys(report).forEach(key => {
+  // forget about windows now, sorry -- kaoru
+  /*Object.keys(report).forEach(key => {
     report[key] =
       typeof report[key] === 'string' ? report[key].replace(/\\/g, '/') : report[key].map(r => r.replace(/\\/g, '/'));
-  });
+  });*/
   return report;
 };
 
@@ -216,8 +218,8 @@ test.serial('should generate fail report', async t => {
     const expected = {
       actualItems: [`${SAMPLE_IMAGE}`],
       expectedItems: [`${SAMPLE_IMAGE}`],
-      diffItems: [`${SAMPLE_DIFF_IMAGE}`],
-      failedItems: [`${SAMPLE_IMAGE}`],
+      diffItems: [{image: `${SAMPLE_DIFF_IMAGE}`, ratio: SAMPLE_DIFF_RATIO}],
+      failedItems: [{image: `${SAMPLE_IMAGE}`, ratio: SAMPLE_DIFF_RATIO}],
       newItems: [],
       deletedItems: [],
       passedItems: [],
@@ -227,6 +229,7 @@ test.serial('should generate fail report', async t => {
     };
     t.deepEqual(report, expected);
   } catch (e) {
+    console.log(e);
     t.fail();
   }
 });
@@ -249,8 +252,8 @@ test.serial('should generate fail report with -T 0.00', async t => {
     const expected = {
       actualItems: [`${SAMPLE_IMAGE}`],
       expectedItems: [`${SAMPLE_IMAGE}`],
-      diffItems: [`${SAMPLE_DIFF_IMAGE}`],
-      failedItems: [`${SAMPLE_IMAGE}`],
+      diffItems: [{image: `${SAMPLE_DIFF_IMAGE}`, ratio: SAMPLE_DIFF_RATIO}],
+      failedItems: [{image: `${SAMPLE_IMAGE}`, ratio: SAMPLE_DIFF_RATIO}],
       newItems: [],
       deletedItems: [],
       passedItems: [],
@@ -286,7 +289,7 @@ test.serial('should not generate fail report with -T 1.00', async t => {
       failedItems: [],
       newItems: [],
       deletedItems: [],
-      passedItems: [`${SAMPLE_IMAGE}`],
+      passedItems: [{image: `${SAMPLE_IMAGE}`, ratio: SAMPLE_DIFF_RATIO}],
       actualDir: `./${WORKSPACE}/resource/actual`,
       expectedDir: `./${WORKSPACE}/resource/expected`,
       diffDir: `./${WORKSPACE}/diff`,
@@ -315,8 +318,8 @@ test.serial('should generate fail report with -S 0', async t => {
     const expected = {
       actualItems: [`${SAMPLE_IMAGE}`],
       expectedItems: [`${SAMPLE_IMAGE}`],
-      diffItems: [`${SAMPLE_DIFF_IMAGE}`],
-      failedItems: [`${SAMPLE_IMAGE}`],
+      diffItems: [{image: `${SAMPLE_DIFF_IMAGE}`, ratio: SAMPLE_DIFF_RATIO}],
+      failedItems: [{image: `${SAMPLE_IMAGE}`, ratio: SAMPLE_DIFF_RATIO}],
       newItems: [],
       deletedItems: [],
       passedItems: [],
@@ -352,7 +355,7 @@ test.serial('should not generate fail report with -S 10000000', async t => {
       failedItems: [],
       newItems: [],
       deletedItems: [],
-      passedItems: [`${SAMPLE_IMAGE}`],
+      passedItems: [{image: `${SAMPLE_IMAGE}`, ratio: SAMPLE_DIFF_RATIO}],
       actualDir: `./${WORKSPACE}/resource/actual`,
       expectedDir: `./${WORKSPACE}/resource/expected`,
       diffDir: `./${WORKSPACE}/diff`,
@@ -380,8 +383,8 @@ test.serial('should update images with `-U` option', async t => {
   const expected = {
     actualItems: [`${SAMPLE_IMAGE}`],
     expectedItems: [`${SAMPLE_IMAGE}`],
-    diffItems: [`${SAMPLE_DIFF_IMAGE}`],
-    failedItems: [`${SAMPLE_IMAGE}`],
+    diffItems: [{image: `${SAMPLE_DIFF_IMAGE}`, ratio: SAMPLE_DIFF_RATIO}],
+    failedItems: [{image: `${SAMPLE_IMAGE}`, ratio: SAMPLE_DIFF_RATIO}],
     newItems: [],
     deletedItems: [],
     passedItems: [],
@@ -412,7 +415,7 @@ test.serial('should generate success report', async t => {
       failedItems: [],
       newItems: [],
       deletedItems: [],
-      passedItems: [`${SAMPLE_IMAGE}`],
+      passedItems: [{image: `${SAMPLE_IMAGE}`, ratio: 0}],
       actualDir: `./${WORKSPACE}/resource/expected`,
       expectedDir: `./${WORKSPACE}/resource/expected`,
       diffDir: `./${WORKSPACE}/diff`,
