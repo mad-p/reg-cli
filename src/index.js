@@ -44,6 +44,9 @@ const copyImages = (actualImages, { expectedDir, actualDir }) => {
       image =>
         new Promise((resolve, reject) => {
           try {
+            if (typeof image == 'object') {
+              image = image.image
+            }
             mkdirp.sync(path.dirname(path.join(expectedDir, image)));
             const writeStream = fs.createWriteStream(path.join(expectedDir, image));
             fs.createReadStream(path.join(actualDir, image)).pipe(writeStream);
@@ -101,7 +104,12 @@ const compareImages = (
 };
 
 const cleanupExpectedDir = (expectedDir, changedFiles) => {
-  const paths = changedFiles.map(image => path.join(expectedDir, image));
+  const paths = changedFiles.map(image => {
+    if (typeof image === 'object') {
+      image = image.image
+    }
+    return path.join(expectedDir, image)
+  });
   del(paths);
 };
 

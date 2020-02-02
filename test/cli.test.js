@@ -14,11 +14,19 @@ const SAMPLE_DIFF_IMAGE = 'sample.png';
 const SAMPLE_DIFF_RATIO = JSON.parse("[0.010746107266435986]")[0];
 
 const replaceReportPath = report => {
-  // forget about windows now, sorry -- kaoru
-  /*Object.keys(report).forEach(key => {
+  Object.keys(report).forEach(key => {
     report[key] =
-      typeof report[key] === 'string' ? report[key].replace(/\\/g, '/') : report[key].map(r => r.replace(/\\/g, '/'));
-  });*/
+      typeof report[key] === 'string' ? report[key].replace(/\\/g, '/') :
+      report[key].map(r => {
+        if (typeof r === 'string') {
+          return r.replace(/\\/g, '/');
+        } else if (typeof r === 'object' && typeof r.image === 'string') {
+          return { ...r, image: r.image.replace(/\\/g, '/') };
+        } else {
+          return r
+        }
+      });
+  });
   return report;
 };
 
