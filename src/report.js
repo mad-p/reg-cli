@@ -7,14 +7,19 @@ import fs from 'fs';
 import mkdirp from 'mkdirp';
 import path from 'path';
 
+export type ReportItem = {
+  image: streng,
+  ratio: Number,
+};
+
 export type ReportParams = {
-  passedItems: string[],
-  failedItems: string[],
+  passedItems: ReportItem[],
+  failedItems: ReportItem[],
   newItems: string[],
   deletedItems: string[],
   expectedItems: string[],
   actualItems: string[],
-  diffItems: string[],
+  diffItems: ReportItem[],
   json: string,
   actualDir: string,
   expectedDir: string,
@@ -60,13 +65,13 @@ const createHTMLReport = params => {
   const json = {
     type: params.failedItems.length === 0 ? 'success' : 'danger',
     hasNew: params.newItems.length > 0,
-    newItems: params.newItems.map(item => ({ raw: item, encoded: encodeFilePath(item) })),
+    newItems: params.newItems.map(item => ({ raw: item, encoded: encodeFilePath(item.image) })),
     hasDeleted: params.deletedItems.length > 0,
-    deletedItems: params.deletedItems.map(item => ({ raw: item, encoded: encodeFilePath(item) })),
+    deletedItems: params.deletedItems.map(item => ({ raw: item, encoded: encodeFilePath(item.image) })),
     hasPassed: params.passedItems.length > 0,
-    passedItems: params.passedItems.map(item => ({ raw: item, encoded: encodeFilePath(item) })),
+    passedItems: params.passedItems.map(item => ({ raw: item, encoded: encodeFilePath(item.image) })),
     hasFailed: params.failedItems.length > 0,
-    failedItems: params.failedItems.map(item => ({ raw: item, encoded: encodeFilePath(item) })),
+    failedItems: params.failedItems.map(item => ({ raw: item, encoded: encodeFilePath(item.image) })),
     actualDir: params.fromJSON
       ? params.actualDir
       : `${params.urlPrefix}${path.relative(path.dirname(params.report), params.actualDir)}`,

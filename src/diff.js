@@ -17,6 +17,7 @@ export type DiffCreatorParams = {
 
 export type DiffResult = {
   image: string;
+  ratio: number;
   passed: boolean;
 }
 
@@ -53,7 +54,7 @@ const createDiff = ({
   ]).then(([actualHash, expectedHash]) => {
     if (actualHash === expectedHash) {
       if (!process || !process.send) return;
-      return process.send({ passed: true, image });
+      return process.send({ passed: true, image, ratio: 0 });
     }
     const diffImage = image.replace(/\.[^\.]+$/, ".png");
     return imgDiff({
@@ -66,9 +67,11 @@ const createDiff = ({
       },
     })
       .then(({ width, height, diffCount }) => {
+        const totalPixel = width * height;
+        const ratio = diffCount / totalPixel;
         const passed = isPassed({ width, height, diffCount, thresholdPixel, thresholdRate });
         if (!process || !process.send) return;
-        process.send({ passed, image });
+        process.send({ passed, image, ratio });
       })
   })
 };
