@@ -43,7 +43,9 @@ var ProcessAdaptor = function () {
         _this._process.once('message', function (result) {
           _this._isRunning = false;
           _this._emitter.emit('compare', {
-            type: result.passed ? 'pass' : 'fail', path: result.image
+            type: result.passed ? 'pass' : 'fail',
+            path: result.image,
+            ratio: result.ratio
           });
           resolve(result);
         });

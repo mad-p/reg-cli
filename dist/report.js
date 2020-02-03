@@ -66,19 +66,19 @@ var createHTMLReport = function createHTMLReport(params) {
     type: params.failedItems.length === 0 ? 'success' : 'danger',
     hasNew: params.newItems.length > 0,
     newItems: params.newItems.map(function (item) {
-      return { raw: item, encoded: encodeFilePath(item) };
+      return { raw: item, encoded: encodeFilePath(item.image) };
     }),
     hasDeleted: params.deletedItems.length > 0,
     deletedItems: params.deletedItems.map(function (item) {
-      return { raw: item, encoded: encodeFilePath(item) };
+      return { raw: item, encoded: encodeFilePath(item.image) };
     }),
     hasPassed: params.passedItems.length > 0,
     passedItems: params.passedItems.map(function (item) {
-      return { raw: item, encoded: encodeFilePath(item) };
+      return { raw: item, encoded: encodeFilePath(item.image) };
     }),
     hasFailed: params.failedItems.length > 0,
     failedItems: params.failedItems.map(function (item) {
-      return { raw: item, encoded: encodeFilePath(item) };
+      return { raw: item, encoded: encodeFilePath(item.image) };
     }),
     actualDir: params.fromJSON ? params.actualDir : '' + params.urlPrefix + _path2.default.relative(_path2.default.dirname(params.report), params.actualDir),
     expectedDir: params.fromJSON ? params.expectedDir : '' + params.urlPrefix + _path2.default.relative(_path2.default.dirname(params.report), params.expectedDir),

@@ -1,6 +1,8 @@
 'use strict';
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; // $FlowIgnore
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; // $FlowIgnore
 // $FlowIgnore
 // $FlowIgnore
 
@@ -62,6 +64,9 @@ var copyImages = function copyImages(actualImages, _ref) {
   return Promise.all(actualImages.map(function (image) {
     return new Promise(function (resolve, reject) {
       try {
+        if ((typeof image === 'undefined' ? 'undefined' : _typeof(image)) == 'object') {
+          image = image.image;
+        }
         _makeDir2.default.sync(_path2.default.dirname(_path2.default.join(expectedDir, image)));
         var writeStream = _fs2.default.createWriteStream(_path2.default.join(expectedDir, image));
         _fs2.default.createReadStream(_path2.default.join(actualDir, image)).pipe(writeStream);
@@ -118,6 +123,9 @@ var compareImages = function compareImages(emitter, _ref2) {
 
 var cleanupExpectedDir = function cleanupExpectedDir(expectedDir, changedFiles) {
   var paths = changedFiles.map(function (image) {
+    if ((typeof image === 'undefined' ? 'undefined' : _typeof(image)) === 'object') {
+      image = image.image;
+    }
     return _path2.default.join(expectedDir, image);
   });
   (0, _del2.default)(paths);
@@ -127,15 +135,15 @@ var aggregate = function aggregate(result) {
   var passed = result.filter(function (r) {
     return r.passed;
   }).map(function (r) {
-    return r.image;
+    return { image: r.image, ratio: r.ratio };
   });
   var failed = result.filter(function (r) {
     return !r.passed;
   }).map(function (r) {
-    return r.image;
+    return { image: r.image, ratio: r.ratio };
   });
-  var diffItems = failed.map(function (image) {
-    return image.replace(/\.[^\.]+$/, '.png');
+  var diffItems = failed.map(function (r) {
+    return { image: r.image.replace(/\.[^\.]+$/, '.png'), ratio: r.ratio };
   });
   return { passed: passed, failed: failed, diffItems: diffItems };
 };

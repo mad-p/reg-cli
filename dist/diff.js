@@ -36,8 +36,8 @@ var isPassed = function isPassed(_ref) {
     return diffCount <= thresholdPixel;
   } else if (typeof thresholdRate === "number") {
     var totalPixel = width * height;
-    var ratio = diffCount / totalPixel;
-    return ratio <= thresholdRate;
+    var _ratio = diffCount / totalPixel;
+    return _ratio <= thresholdRate;
   }
   return diffCount === 0;
 };
@@ -59,7 +59,7 @@ var createDiff = function createDiff(_ref2) {
 
     if (actualHash === expectedHash) {
       if (!process || !process.send) return;
-      return process.send({ passed: true, image: image });
+      return process.send({ passed: true, image: image, ratio: 0 });
     }
     var diffImage = image.replace(/\.[^\.]+$/, ".png");
     return (0, _imgDiffJs.imgDiff)({
@@ -75,9 +75,11 @@ var createDiff = function createDiff(_ref2) {
           height = _ref5.height,
           diffCount = _ref5.diffCount;
 
+      var totalPixel = width * height;
+      var ratio = diffCount / totalPixel;
       var passed = isPassed({ width: width, height: height, diffCount: diffCount, thresholdPixel: thresholdPixel, thresholdRate: thresholdRate });
       if (!process || !process.send) return;
-      process.send({ passed: passed, image: image });
+      process.send({ passed: passed, image: image, ratio: ratio });
     });
   });
 };
