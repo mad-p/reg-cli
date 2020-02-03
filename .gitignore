@@ -5,7 +5,6 @@ report/ui
 .DS_Store
 report.html
 /diff/*
-/dist/*
 /report/dist/*
 /screenshot/*
 sample/index.html
