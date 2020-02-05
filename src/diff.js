@@ -39,7 +39,7 @@ const isPassed = ({ width, height, diffCount, thresholdPixel, thresholdRate }: {
     return diffCount <= thresholdPixel;
   } else if (typeof thresholdRate === "number") {
     const totalPixel = width * height;
-    const ratio = diffCount / totalPixel;
+    const ratio = (diffCount / totalPixel).toFixed(6);
     return ratio <= thresholdRate;
   }
   return diffCount === 0;
