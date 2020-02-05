@@ -39,7 +39,7 @@ const isPassed = ({ width, height, diffCount, thresholdPixel, thresholdRate }: {
     return diffCount <= thresholdPixel;
   } else if (typeof thresholdRate === "number") {
     const totalPixel = width * height;
-    const ratio = (diffCount / totalPixel).toFixed(6);
+    const ratio = diffCount / totalPixel;
     return ratio <= thresholdRate;
   }
   return diffCount === 0;
@@ -68,7 +68,7 @@ const createDiff = ({
     })
       .then(({ width, height, diffCount }) => {
         const totalPixel = width * height;
-        const ratio = diffCount / totalPixel;
+        const ratio = (diffCount / totalPixel).toFixed(6);
         const passed = isPassed({ width, height, diffCount, thresholdPixel, thresholdRate });
         if (!process || !process.send) return;
         process.send({ passed, image, ratio });
