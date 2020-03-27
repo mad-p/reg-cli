@@ -114,6 +114,7 @@ const cleanupExpectedDir = (expectedDir, changedFiles) => {
 };
 
 const aggregate = result => {
+  result = result.filter(r => !r.failed);
   const passed = result.filter(r => r.passed).map(r => { return { image: r.image, ratio: r.ratio } });
   const failed = result.filter(r => !r.passed).map(r => { return { image: r.image, ratio: r.ratio } });
   const diffItems = failed.map(r => { return { image: r.image.replace(/\.[^\.]+$/, '.png'), ratio: r.ratio } });

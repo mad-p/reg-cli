@@ -72,6 +72,8 @@ const createDiff = ({
         const passed = isPassed({ width, height, diffCount, thresholdPixel, thresholdRate });
         if (!process || !process.send) return;
         process.send({ passed, image, ratio });
+      }).catch(() => {
+        process.send({ failed: true });
       })
   })
 };
