@@ -80,6 +80,8 @@ var createDiff = function createDiff(_ref2) {
       var passed = isPassed({ width: width, height: height, diffCount: diffCount, thresholdPixel: thresholdPixel, thresholdRate: thresholdRate });
       if (!process || !process.send) return;
       process.send({ passed: passed, image: image, ratio: ratio });
+    }).catch(function () {
+      process.send({ failed: true });
     });
   });
 };

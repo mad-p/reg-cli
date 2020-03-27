@@ -132,6 +132,9 @@ var cleanupExpectedDir = function cleanupExpectedDir(expectedDir, changedFiles) 
 };
 
 var aggregate = function aggregate(result) {
+  result = result.filter(function (r) {
+    return !r.failed;
+  });
   var passed = result.filter(function (r) {
     return r.passed;
   }).map(function (r) {
